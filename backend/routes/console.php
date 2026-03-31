@@ -1,8 +1,15 @@
 <?php
 
-use Illuminate\Foundation\Inspiring;
-use Illuminate\Support\Facades\Artisan;
+use App\Models\Reservation;
+use Illuminate\Support\Facades\Schedule;
 
-Artisan::command('inspire', function () {
-    $this->comment(Inspiring::quote());
-})->purpose('Display an inspiring quote');
+// Selesaikan reservasi yang sudah lebih dari 2 jam dari waktu booking
+Schedule::call(function () {
+    Reservation::where('status', 'confirmed')
+        ->where('reservation_time', '<=', now()->subHours(2))
+        ->update(['status' => 'completed']);
+})->everyMinute();
+
+
+Schedule::command('reservations:expire-pending')
+    ->everyMinute();
