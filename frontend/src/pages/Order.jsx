@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import api from "../services/api";
+import api from "../lib/api";
 
 export default function Order() {
   const { reservationId } = useParams();
